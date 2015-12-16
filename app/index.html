@@ -1,0 +1,58 @@
+<!doctype html>
+<html ng-app="angularNgTable">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <base href="/">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css(.) styles/vendor.css -->
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
+        <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
+        <link rel="stylesheet" href="bower_components/SpinKit/css/spinkit.css" />
+        <!-- endbuild -->
+        <link rel="stylesheet" href="styles/plugins/ng-table/ng-table.min.css"/>
+        <!-- build:css(.tmp) styles/style.css -->
+        <link rel="stylesheet" href="styles/style.css"/>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div ui-view></div>
+        <!-- build:js(.) scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:js(.) scripts/plugins.js -->
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/ng-csv/build/ng-csv.min.js"></script>
+        <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
+        <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="bower_components/ngSweetAlert/SweetAlert.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/plugins/lodash/index.js"></script>
+
+        <script src="scripts/app.js"></script>
+
+        <script src="scripts/services/data-service.js"></script>
+
+        <script src="scripts/directives/demo-tracked-table.js"></script>
+        <script src="scripts/directives/demo-tracked-table-row.js"></script>
+        <script src="scripts/directives/demo-tracked-table-cell.js"></script>
+        <script src="scripts/directives/markable.js"></script>
+        <script src="scripts/directives/pwcheck.js"></script>
+
+        <script src="scripts/controllers/users.js"></script>
+        <!-- endbuild -->
+    </body>
+</html>

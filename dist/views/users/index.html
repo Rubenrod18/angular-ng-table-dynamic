@@ -1,0 +1,170 @@
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+        <div ng-if="tableParams.data.length">
+            <div class="ng-table-counts btn-group pull-left"
+                ng-if="tableParams.settings().counts.length">
+                    <button ng-repeat="count in tableParams.settings().counts"
+                        type="button"
+                        ng-class="{'active':tableParams.count()==count}"
+                        ng-click="tableParams.count(count)"
+                        class="btn btn-default">
+                        <span class="ng-binding"
+                            ng-bind="count"></span>
+                    </button>
+            </div>
+            <div class="pull-right">
+                <button class="btn btn-success text-capitalize"
+                    ng-click="createModal()"
+                    ng-hide="usersCtrl.checkboxes.someChecked"><span class="glyphicon glyphicon-plus-sign"></span> add user</button>
+                <div ng-show="usersCtrl.checkboxes.someChecked">
+                    <button class="btn btn-primary text-capitalize"
+                        csv-header="getHeader()"
+                        filename="{{ csvFilename() }}"
+                        ng-csv="getArray"
+                        type="button"><span class="glyphicon glyphicon-save"></span> export CSV</span></button>
+                    <button class="btn btn-danger text-capitalize"
+                        ng-click="multipleDel()"><span class="glyphicon glyphicon-trash"></span> delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <script id="headerCheckbox.html"
+        type="text/ng-template">
+        <input class="select-all"
+            ng-model="usersCtrl.checkboxes.checked"
+            type="checkbox"/>
+    </script>
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+        <table class="table table-bordered table-condensed table-hover table-striped"
+            demo-tracked-table="usersCtrl.tableTracker"
+            ng-form="tableForm"
+            ng-table-dynamic="tableParams with header"
+            show-filter="true"
+            style="margin-top: 20px">
+            <!--<colgroup>
+                <col width="3%"/>
+                <col width="18%"/>
+                <col width="30%"/>
+                <col width="20%"/>
+                <col width="20%"/>
+                <col width="10%"/>
+            </colgroup>-->
+            <tr demo-tracked-table-row="row"
+                markable
+                ng-form="rowForm"
+                ng-repeat="row in $data">
+                <!-- When a field is editing, put code on td tag: ng-class="rowForm[col.field].$dirty ? 'bg-warning' : ''"-->
+                <td demo-tracked-table-cell
+                    ng-form="{{col.field}}"
+                    ng-repeat="col in $columns"
+                    ng-show="$data"
+                    ng-switch="col.field">
+                    <input ng-if="!row.isEditing"
+                        ng-model="usersCtrl.checkboxes.items[row.id]"
+                        ng-switch-when="selector"
+                        type="checkbox"/>
+                    <span ng-switch-default class="editable-text"
+                        ng-if="col.dataType !== 'command' &&  col.dataType !== 'date' && !row.isEditing">
+                        <span>{{row[col.field]}}</span>
+                    </span>
+                    <span ng-switch-default class="editable-text"
+                        ng-if="col.dataType === 'date' && !row.isEditing">
+                        <span>{{row[col.field] | date:'dd/MM/yyyy'}}</span>
+                    </span>
+                    <div class="controls"
+                        ng-class="rowForm[col.field].$invalid && rowForm[col.field].$dirty ? 'has-error' : ''"
+                        ng-if="col.dataType !== 'command' && col.dataType !== 'selector' && row.isEditing"
+                        ng-switch="col.dataType">
+                        <form ng-submit="update(row, rowForm)">
+                            <input class="editable-input form-control input-sm"
+                                name="{{col.field}}"
+                                ng-model="row[col.field]"
+                                ng-switch-default
+                                type="text"
+                                required/>
+                            <input
+                                uib-datepicker-popup
+                                class="form-control"
+                                close-text="Close"
+                                is-open="status.opened"
+                                ng-click="open($event)"
+                                ng-model="row[col.field]"
+                                ng-switch-when="date"
+                                type="date"
+                                required/>
+                            <input class="editable-input form-control input-sm"
+                                name="{{col.field}}"
+                                ng-model="row[col.field]"
+                                ng-switch-when="email"
+                                type="email"
+                                required/>
+                            <input class="editable-input form-control input-sm"
+                                name="{{col.field}}"
+                                ng-model="row[col.field]"
+                                ng-switch-when="number"
+                                type="number"
+                                required/>
+                            <select class="editable-input form-control input-sm"
+                                name="{{col.field}}"
+                                ng-model="row[col.field]"
+                                ng-switch-when="select"
+                                ng-options="value for value in options"
+                                required>
+                            </select>
+                        </form>
+                    </div>
+                    <div ng-if="col.dataType === 'command'" class="text-center">
+                        <button class="btn btn-success btn-sm"
+                            data-placement="bottom"
+                            data-toggle="tooltip"
+                            ng-click="update(row, rowForm)"
+                            ng-disabled="rowForm.$pristine || rowForm.$invalid"
+                            ng-if="row.isEditing"
+                            title="Save changes"
+                            type="submit">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                        <button class="btn btn-default btn-sm"
+                            data-placement="bottom"
+                            data-toggle="tooltip"
+                            ng-click="cancel(row, rowForm)"
+                            ng-if="row.isEditing"
+                            title="Cancel changes">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        <div class="btn-group"
+                            ng-if="!row.isEditing">
+                            <button aria-expanded="false"
+                                aria-haspopup="true"
+                                class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown"
+                                type="button">
+                                <span class="glyphicon glyphicon glyphicon-cog"></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu text-capitalize">
+                                <li class="cursor-pointer"><a ng-click="row.isEditing = true"><span class="glyphicon glyphicon-pencil"></span> update</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="cursor-pointer"><a ng-click="del(row)"><span class="glyphicon glyphicon-trash"></span> delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="odd" ng-show="!$data && isFiltering(tableParams.parameters().filter, 'no')">
+                <td colspan="8">No data available in table</td>
+            </tr>
+            <tr class="odd" ng-if="!$data && isFiltering(tableParams.parameters().filter, 'yes') || $data.length == 0">
+                <td colspan="8">No matching records found</td>
+            </tr>
+        </table>
+        <div class="pull-left">
+            <div class="ng-table-info text-left" ng-show="isFiltering(tableParams.parameters().filter, 'no')">Showing {{ start }} to {{ end }} of {{ tableParams.total() }} entries
+            </div>
+            <div class="ng-table-info text-left" ng-show="isFiltering(tableParams.parameters().filter, 'yes')">Showing {{ start }} to {{ end }} of {{ subTotal }} entries (filtered from {{ total }} total entries)
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
